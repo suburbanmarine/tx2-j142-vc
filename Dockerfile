@@ -99,11 +99,6 @@ RUN pbzip2 -d -c /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_out.tar.bz
 RUN pbzip2 -d -c /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src_J121.tar.bz2 | tar -x 
 RUN cp -r /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_out/* /home/buildbot/Linux_for_Tegra/
 
-#todo - do this after generatin the new kernel_supplements.tbz2& kernal image
-USER root
-WORKDIR /home/buildbot/Linux_for_Tegra
-RUN ./apply_binaries.sh
-
 # VC camera drivers
 USER buildbot
 WORKDIR /home/buildbot
@@ -131,6 +126,7 @@ RUN patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/kernel_TX2_32.6.1+/0003-Adde
 RUN patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/kernel_TX2_32.6.1+/0003-Changed-Interrupt-Mask-for-csi4-to-emit-CRC-and-mul.patch
 RUN patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/kernel_TX2_32.6.1+/0004-Added-VC-MIPI-Driver-sources-to-Makefile.patch
 # dt_camera_TX2_32.5.0+
+# TODO - fix this and double check camera dts settings & J142 settings
 # RUN patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/dt_camera_TX2_32.5.0+/0001-Modified-tegra186-quill-p3310-1000-a00-00-base.dts-t.patch
 
 # add this dtsi
@@ -150,18 +146,23 @@ ENV LOCALVERSION=-tegra
 
 # build kernel - https://docs.nvidia.com/jetson/archives/l4t-archived/l4t-3261/index.html#page/Tegra%20Linux%20Driver%20Package%20Development%20Guide/kernel_custom.html#
 WORKDIR /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src/kernel/kernel-4.9
-# RUN make ARCH=arm64 O=$TEGRA_KERNEL_OUT tegra_defconfig
-# RUN make ARCH=arm64 O=$TEGRA_KERNEL_OUT -j`nproc`
+RUN make ARCH=arm64 O=$TEGRA_KERNEL_OUT tegra_defconfig
+RUN make ARCH=arm64 O=$TEGRA_KERNEL_OUT -j`nproc`
+# package modules
+RUN mkdir /home/buildbot/kernel_libs_out
+make ARCH=arm64 O=$TEGRA_KERNEL_OUT modules_install INSTALL_MOD_PATH=/home/buildbot/kernel_libs_out
+WORKDIR /home/buildbot/kernel_libs_out
+RUN tar --owner root --group root -cjf /home/buildbot/kernel_supplements.tbz2 lib/modules
 
-# install kernel
+# install kernel & modules
 # RUN cp $TEGRA_KERNEL_OUT/arch/arm64/boot/Image /home/buildbot/Linux_for_Tegra/kernel/Image
 # RUN rm -r /home/buildbot/Linux_for_Tegra/kernel/dtb/*
 # RUN cp -r $TEGRA_KERNEL_OUT/arch/arm64/boot/dts/* /home/buildbot/Linux_for_Tegra/kernel/dtb/
-# USER root
-# make ARCH=arm64 O=$TEGRA_KERNEL_OUT modules_install INSTALL_MOD_PATH=/home/buildbot/Linux_for_Tegra/rootfs/
-# USER buildbot
-# WORKDIR /home/buildbot/Linux_for_Tegra/rootfs/
-# RUN tar --owner root --group root -cjf /home/buildbot/kernel_supplements.tbz2 lib/modules
+# RUN cp /home/buildbot/kernel_supplements.tbz2 /home/buildbot/Linux_for_Tegra/kernel/kernel_supplements.tbz2
+
+USER root
+WORKDIR /home/buildbot/Linux_for_Tegra
+RUN ./apply_binaries.sh
 
 USER buildbot
 WORKDIR /home/buildbot
