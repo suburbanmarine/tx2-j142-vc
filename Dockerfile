@@ -79,6 +79,7 @@ RUN mkdir /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143
 WORKDIR /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143
 RUN pbzip2 -d -c /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143.tar.bz2 | tar -x 
 RUN pbzip2 -d -c /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_out.tar.bz2 | tar -x 
+RUN pbzip2 -d -c /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src_J121.tar.bz2 | tar -x 
 RUN cp -r /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_out/* /home/buildbot/Linux_for_Tegra/
 
 USER root
@@ -92,9 +93,39 @@ RUN git clone https://github.com/VC-MIPI-modules/vc_mipi_nvidia.git
 WORKDIR /home/buildbot/vc_mipi_nvidia
 RUN git checkout v0.12.3
 
+COPY --chown=buildbot:buildbot 0002-Reduced-image-size-limitation-from-width-32-to-4-and.patch /home/buildbot/0002-Reduced-image-size-limitation-from-width-32-to-4-and.patch
+
+# Apply these kernel patches
+WORKDIR /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src
+# kernel_common_32.3.1+
+patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/kernel_common_32.3.1+/0001-Added-cropping-position-left-top-to-sensor-image-pro.patch
+patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/kernel_common_32.3.1+/0001-Added-.gitignore.patch
+patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/kernel_common_32.3.1+/0001-Added-implementation-to-set-image-position-and-size-.patch
+patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/kernel_common_32.3.1+/0002-Reduced-image-size-limitation-from-width-32-to-4-and.patch
+# dt_camera_TX2_32.5.0+
+patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/dt_camera_TX2_32.5.0+/0001-Modified-tegra186-quill-p3310-1000-a00-00-base.dts-t.patch
+# kernel_TX2_32.6.1+
+patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/kernel_TX2_32.6.1+/0001-Added-controls-trigger_mode-flash_mode-and-black_lev.patch
+patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/kernel_TX2_32.6.1+/0001-Added-RAW8-grey-RAW10-y10-and-RAW12-y12-format-to-th.patch
+patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/kernel_TX2_32.6.1+/0001-Bugfix-in-destroy_buffer_table-.-When-the-capture_bu.patch
+patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/kernel_TX2_32.6.1+/0001-Commented-out-tegra186-quill-p3310-1000-a00-00-lc898.patch
+patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/kernel_TX2_32.6.1+/0001-Increased-tegra-channel-timeout.patch
+patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/kernel_TX2_32.6.1+/0002-Changed-control-flash_mode-to-io_mode.patch
+patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/kernel_TX2_32.6.1+/0003-Added-control-single_trigger-to-the-tegra-framework.patch
+patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/kernel_TX2_32.6.1+/0003-Added-RAW14-y14-format-to-the-tegra-framework.patch
+patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/kernel_TX2_32.6.1+/0003-Changed-Interrupt-Mask-for-csi4-to-emit-CRC-and-mul.patch
+patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/kernel_TX2_32.6.1+/0004-Added-VC-MIPI-Driver-sources-to-Makefile.patch
+
+# copy this kernel driver
+# RUN cp -r /home/buildbot/vc_mipi_nvidia/src/driver/* /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src/kernel/nvidia/drivers/media/i2c/
+
+# apply this dtsi
+# RUN cp /home/buildbot/vc_mipi_nvidia/src/devicetree/Auvidea_J20_TX2/tegra186-camera-vc-mipi-cam.dtsi /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src/hardware/nvidia/platform/t18x/common/kernel-dts/t18x-common-modules/
+
+# rebuild kernel? copy back to rootfs?
 
 USER root
 WORKDIR /home/buildbot
 
 # flash tx2 emmc with
-# ./flash.sh --no-root-check jetson-tx2 mmcblk0p1
+# ./flash.sh --no-root-check jetson-tx2-devkit mmcblk0p1
