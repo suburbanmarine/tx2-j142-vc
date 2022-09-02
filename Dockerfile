@@ -150,7 +150,7 @@ RUN make ARCH=arm64 O=$TEGRA_KERNEL_OUT tegra_defconfig
 RUN make ARCH=arm64 O=$TEGRA_KERNEL_OUT -j`nproc`
 # package modules
 RUN mkdir /home/buildbot/kernel_libs_out
-make ARCH=arm64 O=$TEGRA_KERNEL_OUT modules_install INSTALL_MOD_PATH=/home/buildbot/kernel_libs_out
+RUN make ARCH=arm64 O=$TEGRA_KERNEL_OUT modules_install INSTALL_MOD_PATH=/home/buildbot/kernel_libs_out
 WORKDIR /home/buildbot/kernel_libs_out
 RUN tar --owner root --group root -cjf /home/buildbot/kernel_supplements.tbz2 lib/modules
 
