@@ -47,9 +47,11 @@ RUN apt-get update && apt-get install -y \
 
 # C dev tools
 RUN apt-get update && apt-get install -y \
+	bc                   \
 	build-essential      \
 	cmake                \
 	git                  \
+	xxd                  \
 	&& apt-get clean
 
 # NVIDIA deps
@@ -74,7 +76,6 @@ COPY --chown=buildbot:buildbot gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu
 
 # L4T compiler
 RUN xz --decompress --stdout /home/buildbot/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu.tar.xz | tar -x 
-ENV CROSS_COMPILE_AARCH64_PATH=/home/buildbot/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu
 
 # L4T base
 RUN pbzip2 -d -c /home/buildbot/jetson_linux_r32.6.1_aarch64.tbz2 | tar -x 
@@ -123,7 +124,7 @@ RUN patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/kernel_TX2_32.6.1+/0003-Adde
 RUN patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/kernel_TX2_32.6.1+/0003-Changed-Interrupt-Mask-for-csi4-to-emit-CRC-and-mul.patch
 RUN patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/kernel_TX2_32.6.1+/0004-Added-VC-MIPI-Driver-sources-to-Makefile.patch
 # dt_camera_TX2_32.5.0+
-#RUN patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/dt_camera_TX2_32.5.0+/0001-Modified-tegra186-quill-p3310-1000-a00-00-base.dts-t.patch
+# RUN patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/dt_camera_TX2_32.5.0+/0001-Modified-tegra186-quill-p3310-1000-a00-00-base.dts-t.patch
 
 # add this dtsi
 RUN cp /home/buildbot/vc_mipi_nvidia/src/devicetree/Auvidea_J20_TX2/tegra186-camera-vc-mipi-cam.dtsi /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src/hardware/nvidia/platform/t18x/common/kernel-dts/t18x-common-modules/
@@ -133,7 +134,29 @@ RUN cp -r /home/buildbot/vc_mipi_nvidia/src/driver/* /home/buildbot/Jetpack_4_6_
 
 # rebuild kernel? copy back to rootfs?
 
-USER root
+# setup kernel build
+RUN mkdir /home/buildbot/kernel_out
+ENV CROSS_COMPILE_AARCH64_PATH=/home/buildbot/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu
+ENV TEGRA_KERNEL_OUT=/home/buildbot/kernel_out
+ENV CROSS_COMPILE=/home/buildbot/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-
+ENV LOCALVERSION=-tegra
+
+# build kernel - https://docs.nvidia.com/jetson/archives/l4t-archived/l4t-3261/index.html#page/Tegra%20Linux%20Driver%20Package%20Development%20Guide/kernel_custom.html#
+WORKDIR /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src/kernel/kernel-4.9
+# RUN make ARCH=arm64 O=$TEGRA_KERNEL_OUT tegra_defconfig
+# RUN make ARCH=arm64 O=$TEGRA_KERNEL_OUT -j`nproc`
+
+# install kernel
+# RUN cp $TEGRA_KERNEL_OUT/arch/arm64/boot/Image /home/buildbot/Linux_for_Tegra/kernel/Image
+# RUN rm -r /home/buildbot/Linux_for_Tegra/kernel/dtb/*
+# RUN cp -r $TEGRA_KERNEL_OUT/arch/arm64/boot/dts/* /home/buildbot/Linux_for_Tegra/kernel/dtb/
+# USER root
+# make ARCH=arm64 O=$TEGRA_KERNEL_OUT modules_install INSTALL_MOD_PATH=/home/buildbot/Linux_for_Tegra/rootfs/
+# USER buildbot
+# WORKDIR /home/buildbot/Linux_for_Tegra/rootfs/
+# RUN tar --owner root --group root -cjf /home/buildbot/kernel_supplements.tbz2 lib/modules
+
+USER buildbot
 WORKDIR /home/buildbot
 
 # flash tx2 emmc with
