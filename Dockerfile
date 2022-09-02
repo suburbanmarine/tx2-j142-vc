@@ -54,6 +54,7 @@ RUN apt-get update && apt-get install -y \
 	flex                 \
 	gawk                 \
 	git                  \
+	kmod                 \
 	libelf-dev           \
 	libncurses-dev       \
 	libssl-dev           \
