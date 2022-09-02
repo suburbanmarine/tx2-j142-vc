@@ -97,7 +97,6 @@ WORKDIR /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143
 RUN pbzip2 -d -c /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143.tar.bz2 | tar -x 
 RUN pbzip2 -d -c /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_out.tar.bz2 | tar -x 
 RUN pbzip2 -d -c /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src_J121.tar.bz2 | tar -x 
-RUN cp -r /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_out/* /home/buildbot/Linux_for_Tegra/
 
 # VC camera drivers
 USER buildbot
@@ -154,7 +153,10 @@ RUN make ARCH=arm64 O=$TEGRA_KERNEL_OUT modules_install INSTALL_MOD_PATH=/home/b
 WORKDIR /home/buildbot/kernel_libs_out
 RUN tar --owner root --group root -cjf /home/buildbot/kernel_supplements.tbz2 lib/modules
 
-# install kernel & modules
+# install auvidea J142 kernel / modules / dts
+RUN cp -r /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_out/* /home/buildbot/Linux_for_Tegra/
+
+# install VC kernel & modules
 # RUN cp $TEGRA_KERNEL_OUT/arch/arm64/boot/Image /home/buildbot/Linux_for_Tegra/kernel/Image
 # RUN rm -r /home/buildbot/Linux_for_Tegra/kernel/dtb/*
 # RUN cp -r $TEGRA_KERNEL_OUT/arch/arm64/boot/dts/* /home/buildbot/Linux_for_Tegra/kernel/dtb/
