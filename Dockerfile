@@ -31,6 +31,7 @@ RUN apt-get update && apt-get install -y \
 	iputils-tracepath   \
 	rsync               \
 	tzdata              \
+	usbutils            \
 	wget                \
 	&& apt-get clean
 
@@ -42,13 +43,16 @@ RUN apt-get update && apt-get install -y \
 # C dev tools
 RUN apt-get update && apt-get install -y \
 	build-essential      \
-	git                  \
 	cmake                \
+	git                  \
 	&& apt-get clean
 
 # NVIDIA deps
 RUN apt-get update && apt-get install -y \
 	binfmt-support        \
+	cpio                  \
+	python                \
+	python3               \
 	qemu-user-static      \
 	&& apt-get clean
 
@@ -88,5 +92,9 @@ RUN git clone https://github.com/VC-MIPI-modules/vc_mipi_nvidia.git
 WORKDIR /home/buildbot/vc_mipi_nvidia
 RUN git checkout v0.12.3
 
-USER buildbot
+
+USER root
 WORKDIR /home/buildbot
+
+# flash tx2 emmc with
+# ./flash.sh --no-root-check jetson-tx2 mmcblk0p1
