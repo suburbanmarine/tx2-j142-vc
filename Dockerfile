@@ -26,7 +26,6 @@ ENV LC_ALL=en_US.UTF-8
 
 # Tools for interactive use
 RUN apt-get update && apt-get install -y \
-	gdebi               \
 	iputils-ping        \
 	iputils-tracepath   \
 	manpages-dev        \
@@ -47,10 +46,17 @@ RUN apt-get update && apt-get install -y \
 
 # C dev tools
 RUN apt-get update && apt-get install -y \
+	autoconf             \
 	bc                   \
+	bison                \
 	build-essential      \
 	cmake                \
+	flex                 \
+	gawk                 \
 	git                  \
+	libelf-dev           \
+	libncurses-dev       \
+	libssl-dev           \
 	xxd                  \
 	&& apt-get clean
 
@@ -93,6 +99,7 @@ RUN pbzip2 -d -c /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_out.tar.bz
 RUN pbzip2 -d -c /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src_J121.tar.bz2 | tar -x 
 RUN cp -r /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_out/* /home/buildbot/Linux_for_Tegra/
 
+#todo - do this after generatin the new kernel_supplements.tbz2& kernal image
 USER root
 WORKDIR /home/buildbot/Linux_for_Tegra
 RUN ./apply_binaries.sh
