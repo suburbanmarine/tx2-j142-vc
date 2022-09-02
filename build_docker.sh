@@ -1,0 +1,1 @@
+docker build . -t nvidia_tx2_j142_vc
