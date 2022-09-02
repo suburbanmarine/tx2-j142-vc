@@ -29,10 +29,14 @@ RUN apt-get update && apt-get install -y \
 	gdebi               \
 	iputils-ping        \
 	iputils-tracepath   \
+	manpages-dev        \
+	manpages-posix      \
+	manpages-posix-dev  \
 	rsync               \
 	tzdata              \
 	usbutils            \
 	wget                \
+	xauth               \
 	&& apt-get clean
 
 RUN apt-get update && apt-get install -y \
@@ -69,8 +73,9 @@ COPY --chown=buildbot:buildbot jetson_linux_r32.6.1_aarch64.tbz2                
 COPY --chown=buildbot:buildbot gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu.tar.xz /home/buildbot/
 
 # L4T compiler
-RUN xz --decompress --stdout /home/buildbot/jetson_linux_r32.6.1_aarch64.tbz2 | tar -x 
+RUN xz --decompress --stdout /home/buildbot/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu.tar.xz | tar -x 
 ENV CROSS_COMPILE_AARCH64_PATH=/home/buildbot/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu
+
 # L4T base
 RUN pbzip2 -d -c /home/buildbot/jetson_linux_r32.6.1_aarch64.tbz2 | tar -x 
 
