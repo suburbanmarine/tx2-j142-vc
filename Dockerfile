@@ -135,8 +135,6 @@ RUN cp /home/buildbot/vc_mipi_nvidia/src/devicetree/Auvidea_J20_TX2/tegra186-cam
 # copy this kernel driver
 RUN cp -r /home/buildbot/vc_mipi_nvidia/src/driver/* /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src/kernel/nvidia/drivers/media/i2c/
 
-# rebuild kernel? copy back to rootfs?
-
 # setup kernel build
 RUN mkdir /home/buildbot/kernel_out
 ENV CROSS_COMPILE_AARCH64_PATH=/home/buildbot/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu
