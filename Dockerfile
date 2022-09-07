@@ -31,9 +31,11 @@ RUN apt-get update && apt-get install -y \
 	manpages-dev        \
 	manpages-posix      \
 	manpages-posix-dev  \
+	nano                \
 	rsync               \
 	tzdata              \
 	usbutils            \
+	vim                 \
 	wget                \
 	xauth               \
 	&& apt-get clean
@@ -146,20 +148,30 @@ ENV LOCALVERSION=-tegra
 WORKDIR /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src/kernel/kernel-4.9
 RUN make ARCH=arm64 O=$TEGRA_KERNEL_OUT tegra_defconfig
 RUN make ARCH=arm64 O=$TEGRA_KERNEL_OUT -j`nproc`
+
 # package modules
+WORKDIR /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src/kernel/kernel-4.9
 RUN mkdir /home/buildbot/kernel_libs_out
 RUN make ARCH=arm64 O=$TEGRA_KERNEL_OUT modules_install INSTALL_MOD_PATH=/home/buildbot/kernel_libs_out
 WORKDIR /home/buildbot/kernel_libs_out
 RUN tar --owner root --group root -cjf /home/buildbot/kernel_supplements.tbz2 lib/modules
 
+# package headers - this isn't correct
+# ENV TEGRA_KERNEL_HEADERS_OUT=/home/buildbot/kernel_headers_out/usr
+# WORKDIR /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src/kernel/kernel-4.9
+# RUN mkdir -p $TEGRA_KERNEL_HEADERS_OUT
+# RUN make ARCH=arm64 O=$TEGRA_KERNEL_OUT headers_install INSTALL_HDR_PATH=$TEGRA_KERNEL_HEADERS_OUT
+# WORKDIR /home/buildbot/kernel_headers_out
+# RUN tar --owner root --group root -cjf /home/buildbot/kernel_headers.tbz2 usr/include
+
 # install auvidea J142 kernel / modules / dts
 RUN cp -r /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_out/* /home/buildbot/Linux_for_Tegra/
 
 # install VC kernel & modules
-# RUN cp $TEGRA_KERNEL_OUT/arch/arm64/boot/Image /home/buildbot/Linux_for_Tegra/kernel/Image
-# RUN rm -r /home/buildbot/Linux_for_Tegra/kernel/dtb/*
-# RUN cp -r $TEGRA_KERNEL_OUT/arch/arm64/boot/dts/* /home/buildbot/Linux_for_Tegra/kernel/dtb/
-# RUN cp /home/buildbot/kernel_supplements.tbz2 /home/buildbot/Linux_for_Tegra/kernel/kernel_supplements.tbz2
+RUN cp $TEGRA_KERNEL_OUT/arch/arm64/boot/Image /home/buildbot/Linux_for_Tegra/kernel/Image
+RUN rm -r /home/buildbot/Linux_for_Tegra/kernel/dtb/*
+RUN cp -r $TEGRA_KERNEL_OUT/arch/arm64/boot/dts/* /home/buildbot/Linux_for_Tegra/kernel/dtb/
+RUN cp /home/buildbot/kernel_supplements.tbz2 /home/buildbot/Linux_for_Tegra/kernel/kernel_supplements.tbz2
 
 USER root
 WORKDIR /home/buildbot/Linux_for_Tegra
