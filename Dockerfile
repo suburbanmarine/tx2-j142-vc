@@ -41,7 +41,7 @@ RUN apt-get update && apt-get install -y \
 	&& apt-get clean
 
 RUN apt-get update && apt-get install -y \
-	pbzip2              \
+	lbzip2              \
 	pigz                \
 	xz-utils            \
 	&& apt-get clean
@@ -87,19 +87,19 @@ COPY --chown=buildbot:buildbot gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu
 RUN xz --decompress --stdout /home/buildbot/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu.tar.xz | tar -x 
 
 # L4T base
-RUN pbzip2 -d -c /home/buildbot/jetson_linux_r32.6.1_aarch64.tbz2 | tar -x 
+RUN lbzip2 -d -c /home/buildbot/jetson_linux_r32.6.1_aarch64.tbz2 | tar -x 
 
 # L4T sample rootfs
 USER root
 WORKDIR /home/buildbot/Linux_for_Tegra/rootfs
-RUN pbzip2 -d -c /home/buildbot/tegra_linux_sample-root-filesystem_r32.6.1_aarch64.tbz2 | tar -x
+RUN lbzip2 -d -c /home/buildbot/tegra_linux_sample-root-filesystem_r32.6.1_aarch64.tbz2 | tar -x
 
 # auvidea J142 patches
 RUN mkdir /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143
 WORKDIR /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143
-RUN pbzip2 -d -c /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143.tar.bz2 | tar -x 
-RUN pbzip2 -d -c /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_out.tar.bz2 | tar -x 
-RUN pbzip2 -d -c /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src_J121.tar.bz2 | tar -x 
+RUN lbzip2 -d -c /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143.tar.bz2 | tar -x 
+RUN lbzip2 -d -c /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_out.tar.bz2 | tar -x 
+RUN lbzip2 -d -c /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src_J121.tar.bz2 | tar -x 
 
 # VC camera drivers
 USER buildbot
