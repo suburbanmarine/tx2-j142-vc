@@ -195,7 +195,7 @@
                 active_t                 = "0";
                 active_w                 = "5440";
                 active_h                 = "3648";
-                pixel_t                  = "bayer_rggb12";
+                pixel_t                  = "bayer_rggb8";
 
                 min_gain_val             = "0";         // mdB
                 max_gain_val             = "27000";     // mdB
@@ -208,9 +208,9 @@
                 default_exp_time         = "10000";     // us
 
                 min_framerate            = "0";         // mHz
-                max_framerate            = "11200";     // mHz
+                max_framerate            = "13400";     // mHz
                 step_framerate           = "100";       // mHz
-                default_framerate        = "11200";     // mHz
+                default_framerate        = "13400";     // mHz
                 // ----------------------------------------------------
 
                 gain_factor              = "1000";
@@ -285,7 +285,7 @@
                 active_t                 = "0";
                 active_w                 = "5440";
                 active_h                 = "3648";
-                pixel_t                  = "bayer_rggb12";
+                pixel_t                  = "bayer_rggb8";
 
                 min_gain_val             = "0";         // mdB
                 max_gain_val             = "27000";     // mdB
@@ -298,9 +298,9 @@
                 default_exp_time         = "10000";     // us
 
                 min_framerate            = "0";         // mHz
-                max_framerate            = "11200";     // mHz
+                max_framerate            = "13400";     // mHz
                 step_framerate           = "100";       // mHz
-                default_framerate        = "11200";     // mHz
+                default_framerate        = "13400";     // mHz
                 // ----------------------------------------------------
 
                 gain_factor              = "1000";
