@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
 
-RUN echo "Acquire::http::Proxy \"http://helios10g.lan:3142\";" > /etc/apt/apt.conf.d/02proxy
+# RUN echo "Acquire::http::Proxy \"http://helios10g.lan:3142\";" > /etc/apt/apt.conf.d/02proxy
 
 ARG DEBIAN_FRONTEND=noninteractive
 
