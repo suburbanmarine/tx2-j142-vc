@@ -370,10 +370,10 @@
                     pcl_id = "v4l2_sensor";
 #if VC_MIPI_MANUFACTURER == 1
                     devname = "vc_mipi 2-001a";
-                    proc-device-tree = "/proc/device-tree/i2c@3180000/vc_mipi@1a";
+                    proc-device-tree = "/proc/device-tree/i2c@31c0000/vc_mipi@1a";
 #else
                     devname = "vc_mipi 2-0060";
-                    proc-device-tree = "/proc/device-tree/i2c@3180000/vc_mipi@60";
+                    proc-device-tree = "/proc/device-tree/i2c@31c0000/vc_mipi@60";
 #endif
                 };
                 cam_module0_drivernode1: drivernode1 {
@@ -394,10 +394,10 @@
                     pcl_id = "v4l2_sensor";
 #if VC_MIPI_MANUFACTURER == 1
                     devname = "vc_mipi 7-001a";
-                    proc-device-tree = "/proc/device-tree/i2c@c250000/vc_mipi@1a";
+                    proc-device-tree = "/proc/device-tree/i2c@3180000/vc_mipi@1a";
 #else
                     devname = "vc_mipi 7-0060";
-                    proc-device-tree = "/proc/device-tree/i2c@c250000/vc_mipi@60";
+                    proc-device-tree = "/proc/device-tree/i2c@3180000/vc_mipi@60";
 #endif
                 };
                 cam_module1_drivernode1: drivernode1 {
