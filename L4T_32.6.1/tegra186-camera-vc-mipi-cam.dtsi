@@ -20,8 +20,8 @@
 // ------------------------------------------------------------------------------------------------
 //  Driver Configuration for NVIDIA Jetson TX2 Developer Kit on Auvidea J20
 // ------------------------------------------------------------------------------------------------
-#define VC_MIPI_CAM_2       1   // 1: Enabled, 0: Disabled  (serial_c => CSI Port 2 => VI Stream 2)
-#define VC_MIPI_CAM_3       1   // 1: Enabled, 0: Disabled  (serial_e => CSI Port 4 => VI Stream 4)
+#define VC_MIPI_CAM_2       1   // 1: Enabled, 0: Disabled  (serial_c => CSI Port 2 => VI Stream 2) (I2C6)
+#define VC_MIPI_CAM_3       1   // 1: Enabled, 0: Disabled  (serial_e => CSI Port 4 => VI Stream 4) (I2C2)
 // ------------------------------------------------------------------------------------------------
 //  Supported number of lanes
 // -----+------------------------------------------------------------------------------------------
@@ -156,7 +156,7 @@
     };
 
 #if VC_MIPI_CAM_2 == 1
-    i2c@3180000 {
+    i2c@31c0000 {
 #if VC_MIPI_MANUFACTURER == 1
         vc_mipi_cam0: vc_mipi@1a {
             reg                     = <0x1a>;
@@ -246,7 +246,7 @@
     };
 #endif
 #if VC_MIPI_CAM_3 == 1
-    i2c@c250000 {
+    i2c@3180000 {
 #if VC_MIPI_MANUFACTURER == 1
         vc_mipi_cam1: vc_mipi@1a {
             reg                     = <0x1a>;
