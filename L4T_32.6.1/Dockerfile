@@ -138,6 +138,9 @@ COPY --chown=buildbot:buildbot tegra186-camera-vc-mipi-cam.dtsi /home/buildbot/J
 # copy this kernel driver
 RUN cp -r /home/buildbot/vc_mipi_nvidia/src/driver/* /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src/kernel/nvidia/drivers/media/i2c/
 
+# add patched top level dts
+COPY--chown=buildbot:buildbot tegra186-quill-p3310-1000-c03-00-base.dts /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src/hardware/nvidia/platform/t18x/quill/kernel-dts/tegra186-quill-p3310-1000-c03-00-base.dts
+
 # setup kernel build
 RUN mkdir /home/buildbot/kernel_out
 ENV CROSS_COMPILE_AARCH64_PATH=/home/buildbot/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu
