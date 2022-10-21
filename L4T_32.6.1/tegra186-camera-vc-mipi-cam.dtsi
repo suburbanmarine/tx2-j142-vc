@@ -411,16 +411,17 @@
     };
 };
 
-#define CAM0_RST_L  TEGRA_MAIN_GPIO(R, 5)
-#define CAM0_PWDN   TEGRA_MAIN_GPIO(R, 0)
+#define CSI_AB_CAM_GPIO   TEGRA_MAIN_GPIO(F, 7)
+#define CSI_CD_CAM_GPIO   TEGRA_MAIN_GPIO(G, 8)
+#define CSI_EF_CAM_GPIO   TEGRA_MAIN_GPIO(H, 7)
 
 / {
     gpio@2200000 {
         camera-control-output-low {
             gpio-hog;
             output-low;
-            gpios = <CAM0_RST_L 0 CAM0_PWDN 0>;
-            label = "cam0-rst", "cam0-pwdn";
+            gpios = <CSI_AB_CAM_GPIO 0 CSI_CD_CAM_GPIO 0 CSI_EF_CAM_GPIO 0>;
+            label = "cam-ab-io", "cam-cd-io", "cam-ef-io";
         };
     };
 };
