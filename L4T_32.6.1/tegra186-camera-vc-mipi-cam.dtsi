@@ -198,8 +198,8 @@
                 pixel_t                  = "bayer_rggb12";
 
                 min_gain_val             = "0";         // mdB
-                max_gain_val             = "27";     // mdB
-                step_gain_val            = "0.026";       // mdB
+                max_gain_val             = "27000";     // mdB
+                step_gain_val            = "26";        // mdB
                 default_gain             = "0";         // mdB
 
                 min_exp_time             = "1";         // us
@@ -208,9 +208,9 @@
                 default_exp_time         = "10000";     // us
 
                 min_framerate            = "0";         // mHz
-                max_framerate            = "11.2";     // mHz
+                max_framerate            = "11200";     // mHz
                 step_framerate           = "100";       // mHz
-                default_framerate        = "11.2";     // mHz
+                default_framerate        = "11200";     // mHz
                 // ----------------------------------------------------
 
                 gain_factor              = "1000";
@@ -288,8 +288,8 @@
                 pixel_t                  = "bayer_rggb12";
 
                 min_gain_val             = "0";         // mdB
-                max_gain_val             = "27";     // mdB
-                step_gain_val            = "0.026";       // mdB
+                max_gain_val             = "27000";     // mdB
+                step_gain_val            = "26";        // mdB
                 default_gain             = "0";         // mdB
 
                 min_exp_time             = "1";         // us
@@ -298,9 +298,9 @@
                 default_exp_time         = "10000";     // us
 
                 min_framerate            = "0";         // mHz
-                max_framerate            = "11.2";     // mHz
+                max_framerate            = "11200";     // mHz
                 step_framerate           = "100";       // mHz
-                default_framerate        = "11.2";     // mHz
+                default_framerate        = "11200";     // mHz
                 // ----------------------------------------------------
 
                 gain_factor              = "1000";
