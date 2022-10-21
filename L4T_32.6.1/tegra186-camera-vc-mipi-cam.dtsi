@@ -176,8 +176,8 @@
             // ----------------------------------------------------
             // If you want to use GStreamer with nvarguscamerasrc
             // you have to adjust this settings
-            physical_w              = "1.000";
-            physical_h              = "1.000";
+            physical_w              = "13.305";
+            physical_h              = "8.865";
             // ----------------------------------------------------
 
             // This node is needed by the Tegra framework.
@@ -193,13 +193,13 @@
                 // you have to adjust this settings. 
                 active_l                 = "0";
                 active_t                 = "0";
-                active_w                 = "0";
-                active_h                 = "0";
-                pixel_t                  = "bayer_rggb";
+                active_w                 = "5440";
+                active_h                 = "3648";
+                pixel_t                  = "bayer_rggb12";
 
                 min_gain_val             = "0";         // mdB
-                max_gain_val             = "48000";     // mdB
-                step_gain_val            = "100";       // mdB
+                max_gain_val             = "27";     // mdB
+                step_gain_val            = "0.026";       // mdB
                 default_gain             = "0";         // mdB
 
                 min_exp_time             = "1";         // us
@@ -208,9 +208,9 @@
                 default_exp_time         = "10000";     // us
 
                 min_framerate            = "0";         // mHz
-                max_framerate            = "60000";     // mHz
+                max_framerate            = "11.2";     // mHz
                 step_framerate           = "100";       // mHz
-                default_framerate        = "60000";     // mHz
+                default_framerate        = "11.2";     // mHz
                 // ----------------------------------------------------
 
                 gain_factor              = "1000";
@@ -266,8 +266,8 @@
             // ----------------------------------------------------
             // If you want to use GStreamer with nvarguscamerasrc
             // you have to adjust this settings
-            physical_w              = "1.000";
-            physical_h              = "1.000";
+            physical_w              = "13.305";
+            physical_h              = "8.865";
             // ----------------------------------------------------
 
             // This node is needed by the Tegra framework.
@@ -283,13 +283,13 @@
                 // you have to adjust this settings. 
                 active_l                 = "0";
                 active_t                 = "0";
-                active_w                 = "0";
-                active_h                 = "0";
-                pixel_t                  = "bayer_rggb";
+                active_w                 = "5440";
+                active_h                 = "3648";
+                pixel_t                  = "bayer_rggb12";
 
                 min_gain_val             = "0";         // mdB
-                max_gain_val             = "48000";     // mdB
-                step_gain_val            = "100";       // mdB
+                max_gain_val             = "27";     // mdB
+                step_gain_val            = "0.026";       // mdB
                 default_gain             = "0";         // mdB
 
                 min_exp_time             = "1";         // us
@@ -298,9 +298,9 @@
                 default_exp_time         = "10000";     // us
 
                 min_framerate            = "0";         // mHz
-                max_framerate            = "60000";     // mHz
+                max_framerate            = "11.2";     // mHz
                 step_framerate           = "100";       // mHz
-                default_framerate        = "60000";     // mHz
+                default_framerate        = "11.2";     // mHz
                 // ----------------------------------------------------
 
                 gain_factor              = "1000";
