@@ -133,7 +133,7 @@ RUN patch -p1 < /home/buildbot/vc_mipi_nvidia/patch/kernel_TX2_32.6.1+/0004-Adde
 COPY --chown=buildbot:buildbot tegra186-quill-p3310-1000-a00-00-base.dts hardware/nvidia/platform/t18x/quill/kernel-dts/tegra186-quill-p3310-1000-a00-00-base.dts
 
 # add this dtsi
-RUN cp /home/buildbot/vc_mipi_nvidia/src/devicetree/Auvidea_J20_TX2/tegra186-camera-vc-mipi-cam.dtsi /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src/hardware/nvidia/platform/t18x/common/kernel-dts/t18x-common-modules/
+COPY --chown=buildbot:buildbot tegra186-camera-vc-mipi-cam.dtsi /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src/hardware/nvidia/platform/t18x/common/kernel-dts/t18x-common-modules/
 
 # copy this kernel driver
 RUN cp -r /home/buildbot/vc_mipi_nvidia/src/driver/* /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src/kernel/nvidia/drivers/media/i2c/
