@@ -83,6 +83,9 @@ COPY --chown=buildbot:buildbot tegra_linux_sample-root-filesystem_r32.6.1_aarch6
 COPY --chown=buildbot:buildbot jetson_linux_r32.6.1_aarch64.tbz2                        /home/buildbot/
 COPY --chown=buildbot:buildbot gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu.tar.xz /home/buildbot/
 
+COPY --chown=buildbot:buildbot finish_image.sh /home/buildbot
+COPY --chown=buildbot:buildbot flash_image.sh /home/buildbot
+
 # L4T compiler
 RUN xz --decompress --stdout /home/buildbot/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu.tar.xz | tar -x 
 
