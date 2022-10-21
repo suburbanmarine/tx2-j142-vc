@@ -181,7 +181,7 @@ USER root
 WORKDIR /home/buildbot/Linux_for_Tegra
 RUN ./apply_binaries.sh
 
-USER buildbot
+USER root
 WORKDIR /home/buildbot
 
 # flash tx2 emmc with
