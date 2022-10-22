@@ -139,7 +139,7 @@ COPY --chown=buildbot:buildbot tegra186-camera-vc-mipi-cam.dtsi /home/buildbot/J
 RUN cp -r /home/buildbot/vc_mipi_nvidia/src/driver/* /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src/kernel/nvidia/drivers/media/i2c/
 
 # add patched top level dts
-COPY--chown=buildbot:buildbot tegra186-quill-p3310-1000-c03-00-base.dts /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src/hardware/nvidia/platform/t18x/quill/kernel-dts/tegra186-quill-p3310-1000-c03-00-base.dts
+COPY --chown=buildbot:buildbot tegra186-quill-p3310-1000-c03-00-base.dts /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src/hardware/nvidia/platform/t18x/quill/kernel-dts/tegra186-quill-p3310-1000-c03-00-base.dts
 
 # setup kernel build
 RUN mkdir /home/buildbot/kernel_out
@@ -180,6 +180,12 @@ RUN cp /home/buildbot/kernel_supplements.tbz2 /home/buildbot/Linux_for_Tegra/ker
 USER root
 WORKDIR /home/buildbot/Linux_for_Tegra
 RUN ./apply_binaries.sh
+
+# Manually replace modules since ./apply_binaries.sh no longer does and clobbers them
+USER root
+WORKDIR /home/buildbot/Linux_for_Tegra/rootfs
+RUN rm -rf lib/modules
+RUN tar --use-compress-prog=lbzip2 -xf /home/buildbot/Linux_for_Tegra/kernel/kernel_supplements.tbz2
 
 USER root
 WORKDIR /home/buildbot
