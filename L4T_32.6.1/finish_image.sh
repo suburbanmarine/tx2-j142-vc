@@ -30,11 +30,19 @@ chroot --userspec=mbari:mbari /home/buildbot/Linux_for_Tegra/rootfs/home/mbari/g
 chroot --userspec=mbari:mbari /home/buildbot/Linux_for_Tegra/rootfs/home/mbari/gst-interpipe /bin/bash -c "make check"
 chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari/gst-interpipe /bin/bash -c "make install"
 
-chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install libboost-all-dev"
+chroot --userspec=mbari:mbari /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "git clone https://github.com/ZeroCM/zcm.git"
+chroot --userspec=mbari:mbari /home/buildbot/Linux_for_Tegra/rootfs/home/mbari/zcm /bin/bash -c "./waf configure --use-inproc --use-ipc --use-udpm --use-zmq --use-elf"
+chroot --userspec=mbari:mbari /home/buildbot/Linux_for_Tegra/rootfs/home/mbari/zcm /bin/bash -c "./waf build"
+chroot --userspec=mbari:mbari /home/buildbot/Linux_for_Tegra/rootfs/home/mbari/zcm /bin/bash -c "./waf install"
+
+chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install libboost-all-dev libelf-dev"
+chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install libuvc-dev"
+chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install libfcgi-dev libzmq3-dev libzmqpp-dev rapidjson-dev"
+chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install libi2c-dev libgpiod-dev"
 chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install libgstreamermm-1.0-dev libgstrtspserver-1.0-dev"
 chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install libopencv-imgproc-dev libopencv-highgui-dev libopencv-imgcodecs-dev libopencv-core-dev"
 chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install googletest google-mock"
-rapidjson-dev
+chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install libprotobuf-dev libprotobuf-c-dev libprotoc-dev protobuf-compiler protobuf-c-compiler"
 chroot --userspec=mbari:mbari /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "git clone https://github.com/suburbanmarine/opaleye.git"
 
 chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "mv /etc/resolv.conf.bak /etc/resolv.conf"
