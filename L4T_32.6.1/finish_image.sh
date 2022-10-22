@@ -7,6 +7,11 @@ mount --bind /run /home/buildbot/Linux_for_Tegra/rootfs/run
 mount --bind /dev /home/buildbot/Linux_for_Tegra/rootfs/dev
 chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "mv /etc/resolv.conf /etc/resolv.conf.bak"
 cp /etc/resolv.conf /home/buildbot/Linux_for_Tegra/rootfs/etc/resolv.conf
+
+chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "adduser mbari dialout"
+chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "adduser mbari i2c"
+chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "adduser mbari gpio"
+
 chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get update"
 chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install dnsutils minicom nano iperf iperf3 netcat-openbsd"
 chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install ethtool net-tools"
@@ -18,9 +23,14 @@ chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install ca
 
 chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install build-essential cmake git"
 
-chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "adduser mbari dialout"
-chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "adduser mbari i2c"
-chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "adduser mbari gpio"
+chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install libboost-all-dev libelf-dev"
+chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install libuvc-dev"
+chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install libfcgi-dev libzmq3-dev libzmqpp-dev rapidjson-dev"
+chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install libi2c-dev libgpiod-dev"
+chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install libgstreamermm-1.0-dev libgstrtspserver-1.0-dev"
+chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install libopencv-imgproc-dev libopencv-highgui-dev libopencv-imgcodecs-dev libopencv-core-dev"
+chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install googletest google-mock"
+chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install libprotobuf-dev libprotobuf-c-dev libprotoc-dev protobuf-compiler protobuf-c-compiler protobuf-compiler-grpc libgrpc-dev libgrpc++-dev"
 
 chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev gtk-doc-tools"
 chroot --userspec=mbari:mbari /home/buildbot/Linux_for_Tegra/rootfs/home/mbari/gst-interpipe /bin/bash -c "git clone https://github.com/RidgeRun/gst-interpipe.git"
@@ -35,14 +45,6 @@ chroot --userspec=mbari:mbari /home/buildbot/Linux_for_Tegra/rootfs/home/mbari/z
 chroot --userspec=mbari:mbari /home/buildbot/Linux_for_Tegra/rootfs/home/mbari/zcm /bin/bash -c "./waf build"
 chroot --userspec=mbari:mbari /home/buildbot/Linux_for_Tegra/rootfs/home/mbari/zcm /bin/bash -c "./waf install"
 
-chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install libboost-all-dev libelf-dev"
-chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install libuvc-dev"
-chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install libfcgi-dev libzmq3-dev libzmqpp-dev rapidjson-dev"
-chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install libi2c-dev libgpiod-dev"
-chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install libgstreamermm-1.0-dev libgstrtspserver-1.0-dev"
-chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install libopencv-imgproc-dev libopencv-highgui-dev libopencv-imgcodecs-dev libopencv-core-dev"
-chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install googletest google-mock"
-chroot /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "apt-get -y install libprotobuf-dev libprotobuf-c-dev libprotoc-dev protobuf-compiler protobuf-c-compiler"
 chroot --userspec=mbari:mbari /home/buildbot/Linux_for_Tegra/rootfs/home/mbari /bin/bash -c "git clone https://github.com/suburbanmarine/opaleye.git"
 
 chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "mv /etc/resolv.conf.bak /etc/resolv.conf"
