@@ -158,7 +158,7 @@ WORKDIR /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src/kernel/kernel-4
 RUN mkdir /home/buildbot/kernel_libs_out
 RUN make ARCH=arm64 O=$TEGRA_KERNEL_OUT modules_install INSTALL_MOD_PATH=/home/buildbot/kernel_libs_out
 WORKDIR /home/buildbot/kernel_libs_out
-RUN tar --owner root --group root -cjf /home/buildbot/kernel_supplements.tbz2 lib/modules
+RUN tar --use-compress-prog=lbzip2 --owner root --group root -cf /home/buildbot/kernel_supplements.tbz2 lib/modules
 
 # package headers - this isn't correct
 # ENV TEGRA_KERNEL_HEADERS_OUT=/home/buildbot/kernel_headers_out/usr
@@ -166,7 +166,7 @@ RUN tar --owner root --group root -cjf /home/buildbot/kernel_supplements.tbz2 li
 # RUN mkdir -p $TEGRA_KERNEL_HEADERS_OUT
 # RUN make ARCH=arm64 O=$TEGRA_KERNEL_OUT headers_install INSTALL_HDR_PATH=$TEGRA_KERNEL_HEADERS_OUT
 # WORKDIR /home/buildbot/kernel_headers_out
-# RUN tar --owner root --group root -cjf /home/buildbot/kernel_headers.tbz2 usr/include
+# RUN tar --use-compress-prog=lbzip2 --owner root --group root -cf /home/buildbot/kernel_headers.tbz2 usr/include
 
 # install auvidea J142 kernel / modules / dts
 RUN cp -r /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_out/* /home/buildbot/Linux_for_Tegra/
