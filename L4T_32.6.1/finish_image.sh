@@ -13,25 +13,57 @@ chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "adduser mbari i2c"
 chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "adduser mbari gpio"
 
 chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get update"
-chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install dnsutils minicom nano iperf iperf3 netcat-openbsd"
-chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install ethtool net-tools"
-chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install i2c-tools gpiod"
-chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install lbzip pigz"
-chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install rsync wget gdebi"
-chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install v4l-utils"
-chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install ca-certificates"
+
+chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install \\
+	ca-certificates \\
+	dnsutils        \\
+	ethtool         \\
+	gdebi           \\
+	gpiod           \\
+	i2c-tools       \\
+	iperf           \\
+	iperf3          \\
+	lbzip2          \\
+	minicom         \\
+	nano            \\
+	net-tools       \\
+	netcat-openbsd  \\
+	pigz            \\
+	rsync           \\
+	v4l-utils       \\
+	wget            \\
+	&& apt-get clean"
 
 chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install build-essential cmake git"
-chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install gtk-doc-tools"
 
-chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install libboost-all-dev libelf-dev"
-chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install libuvc-dev"
-chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install libfcgi-dev libzmq3-dev libzmqpp-dev rapidjson-dev"
-chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install libi2c-dev libgpiod-dev"
-chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install libgstreamermm-1.0-dev libgstrtspserver-1.0-dev"
-chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install libopencv-imgproc-dev libopencv-highgui-dev libopencv-imgcodecs-dev libopencv-core-dev"
-chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install googletest google-mock"
-chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install libprotobuf-dev libprotobuf-c-dev libprotoc-dev protobuf-compiler protobuf-c-compiler protobuf-compiler-grpc libgrpc-dev libgrpc++-dev"
+chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install \\
+	google-mock              \\
+	googletest               \\
+	gtk-doc-tools            \\
+	libboost-all-dev         \\
+	libelf-dev               \\
+	libfcgi-dev              \\
+	libgpiod-dev             \\
+	libgrpc++-dev            \\
+	libgrpc-dev              \\
+	libgstreamermm-1.0-dev   \\
+	libgstrtspserver-1.0-dev \\
+	libi2c-dev               \\
+	libopencv-core-dev       \\
+	libopencv-highgui-dev    \\
+	libopencv-imgcodecs-dev  \\
+	libopencv-imgproc-dev    \\
+	libprotobuf-c-dev        \\
+	libprotobuf-dev          \\
+	libprotoc-dev            \\
+	libuvc-dev               \\
+	libzmq3-dev              \\
+	libzmqpp-dev             \\
+	protobuf-c-compiler      \\
+	protobuf-compiler        \\
+	protobuf-compiler-grpc   \\
+	rapidjson-dev            \\
+	&& apt-get clean"
 
 # fix module link
 chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "rm /lib/modules/4.9.253-tegra/build"
