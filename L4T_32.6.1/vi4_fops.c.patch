@@ -1,0 +1,11 @@
+--- vi4_fops.c	2022-11-15 22:16:16.711448234 +0000
++++ vi4_fops.c	2022-11-15 22:16:41.627460872 +0000
+@@ -1086,7 +1086,7 @@
+ 	}
+ 
+ 	chan->sequence = 0;
+-	chan->timeout = msecs_to_jiffies(5000);
++	chan->timeout = msecs_to_jiffies(60000);
+ 	if (!chan->low_latency)
+ 		tegra_channel_init_ring_buffer(chan);
+ 
