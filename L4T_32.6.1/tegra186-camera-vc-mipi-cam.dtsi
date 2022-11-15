@@ -170,7 +170,9 @@
             sensor_model            = "vc_mipi";
 
             num_lanes               = NUM_LANES;
+            // '0: disabled', '1: external', '2: pulsewidth', '3: self', '4: single', '5: sync', '6: stream_edge', '7: stream_level
             trigger_mode            = "0";
+            //  '0: disabled', '1: flash active high', '2: flash active low', '3: trigger active low', '4: trigger active low and flash active high', '5: trigger and flash active low'
             io_mode                 = "0";
 
             // ----------------------------------------------------
@@ -415,13 +417,13 @@
 #define CSI_CD_CAM_GPIO   TEGRA_MAIN_GPIO(G, 8)
 #define CSI_EF_CAM_GPIO   TEGRA_MAIN_GPIO(H, 7)
 
-/ {
-    gpio@2200000 {
-        camera-control-output-low {
-            gpio-hog;
-            output-low;
-            gpios = <CSI_AB_CAM_GPIO 0 CSI_CD_CAM_GPIO 0 CSI_EF_CAM_GPIO 0>;
-            label = "cam-ab-io", "cam-cd-io", "cam-ef-io";
-        };
-    };
-};
+// / {
+//     gpio@2200000 {
+//         camera-control-output-low {
+//             gpio-hog;
+//             output-low;
+//             gpios = <CSI_AB_CAM_GPIO 0 CSI_CD_CAM_GPIO 0 CSI_EF_CAM_GPIO 0>;
+//             label = "cam-ab-io", "cam-cd-io", "cam-ef-io";
+//         };
+//     };
+// };

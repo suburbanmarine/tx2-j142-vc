@@ -1,6 +1,18 @@
 #!/usr/bin/env bash
 
+# set -x
+# trap read debug
+
+# trap 'exit -1' err
+
 pushd /home/buildbot/Linux_for_Tegra
+
+# local caching proxy server
+echo "Acquire::http::Proxy  \"http://helios.lan:3142\";" > /home/buildbot/Linux_for_Tegra/rootfs/etc/apt/apt.conf.d/02proxy
+echo "Acquire::https::Proxy \"http://helios.lan:3142\";" >> /home/buildbot/Linux_for_Tegra/rootfs/etc/apt/apt.conf.d/02proxy
+
+mv /home/buildbot/Linux_for_Tegra/rootfs/etc/apt/sources.list.d/nvidia-l4t-apt-source.list $HOME/nvidia-l4t-apt-source.list
+
 ./tools/l4t_create_default_user.sh -u mbari -p mbari -n tx2-imx183 --accept-license
 
 mount --bind /run /home/buildbot/Linux_for_Tegra/rootfs/run
@@ -89,5 +101,7 @@ chroot --userspec=+1000:+1000 /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c
 chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "mv /etc/resolv.conf.bak /etc/resolv.conf"
 
 chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c  "rm /etc/apt/apt.conf.d/02proxy"
+
+mv $HOME/nvidia-l4t-apt-source.list /home/buildbot/Linux_for_Tegra/rootfs/etc/apt/sources.list.d/nvidia-l4t-apt-source.list
 
 popd
