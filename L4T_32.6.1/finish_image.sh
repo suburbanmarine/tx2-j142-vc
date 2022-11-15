@@ -11,6 +11,7 @@ pushd /home/buildbot/Linux_for_Tegra
 echo "Acquire::http::Proxy  \"http://helios.lan:3142\";" > /home/buildbot/Linux_for_Tegra/rootfs/etc/apt/apt.conf.d/02proxy
 echo "Acquire::https::Proxy \"http://helios.lan:3142\";" >> /home/buildbot/Linux_for_Tegra/rootfs/etc/apt/apt.conf.d/02proxy
 
+# nvidia-l4t-apt-source.list is having issues with proxy cache, we don't need it atm so move it out of way. it is restored at the end
 mv /home/buildbot/Linux_for_Tegra/rootfs/etc/apt/sources.list.d/nvidia-l4t-apt-source.list $HOME/nvidia-l4t-apt-source.list
 
 ./tools/l4t_create_default_user.sh -u mbari -p mbari -n tx2-imx183 --accept-license
@@ -27,6 +28,7 @@ chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "adduser mbari gpio"
 chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get update"
 
 chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install \\
+	bash-completion \\
 	ca-certificates \\
 	dnsutils        \\
 	ethtool         \\
@@ -46,7 +48,11 @@ chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install \\
 	wget            \\
 	&& apt-get clean"
 
-chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install build-essential cmake git"
+chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install \\
+	build-essential \\
+	cmake           \\
+	git             \\
+	&& apt-get clean"
 
 chroot /home/buildbot/Linux_for_Tegra/rootfs /bin/bash -c "apt-get -y install \\
 	google-mock              \\

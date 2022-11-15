@@ -27,6 +27,7 @@ ENV LC_ALL=en_US.UTF-8
 
 # Tools for interactive use
 RUN apt-get update && apt-get install -y \
+	bash-completion     \
 	iputils-ping        \
 	iputils-tracepath   \
 	manpages-dev        \
