@@ -164,7 +164,7 @@ RUN make ARCH=arm64 O=$TEGRA_KERNEL_OUT -j`nproc`
 # package modules
 WORKDIR /home/buildbot/Jetpack_4_6_TX2_J121_J142_J143/kernel_src/kernel/kernel-4.9
 RUN mkdir /home/buildbot/kernel_libs_out
-RUN make ARCH=arm64 O=$TEGRA_KERNEL_OUT modules_install INSTALL_MOD_PATH=/home/buildbot/kernel_libs_out
+RUN make ARCH=arm64 O=$TEGRA_KERNEL_OUT INSTALL_MOD_STRIP=1 modules_install INSTALL_MOD_PATH=/home/buildbot/kernel_libs_out
 WORKDIR /home/buildbot/kernel_libs_out
 RUN tar --use-compress-prog=lbzip2 --owner root --group root -cf /home/buildbot/kernel_supplements.tbz2 lib/modules
 
