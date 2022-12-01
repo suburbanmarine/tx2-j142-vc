@@ -20,6 +20,7 @@
 // ------------------------------------------------------------------------------------------------
 //  Driver Configuration for NVIDIA Jetson TX2 Developer Kit on Auvidea J20
 // ------------------------------------------------------------------------------------------------
+#define VC_MIPI_CAM_1       1
 #define VC_MIPI_CAM_2       1   // 1: Enabled, 0: Disabled  (serial_c => CSI Port 2 => VI Stream 2) (I2C2)
 #define VC_MIPI_CAM_3       1   // 1: Enabled, 0: Disabled  (serial_e => CSI Port 4 => VI Stream 4) (I2C7)
 // ------------------------------------------------------------------------------------------------
@@ -65,8 +66,9 @@
     #define NUM_LANES "2" 
     #define NUM_CSI_LANES 4
 #endif
-
-#if VC_MIPI_CAM_2 == 1 && VC_MIPI_CAM_3 == 1
+#if VC_MIPI_CAM_1 == 1 && VC_MIPI_CAM_2 == 1 && VC_MIPI_CAM_3 == 1
+    #define VC_MIPI_CAMERAS 3
+#elif VC_MIPI_CAM_2 == 1 && VC_MIPI_CAM_3 == 1
     #define VC_MIPI_CAMERAS 2
 #else
     #define VC_MIPI_CAMERAS 1
@@ -79,6 +81,16 @@
             ports {
                 #address-cells = <1>;
                 #size-cells = <0>;
+#if VC_MIPI_CAM_1 == 1
+                vc_vi_port2: port@2 {
+                    reg = <2>;
+                    vc_vi_in2: endpoint {
+                        port-index = <0>;
+                        bus-width = <BUS_WIDTH>;
+                        remote-endpoint = <&vc_csi_out2>;
+                    };
+                };
+#endif
 #if VC_MIPI_CAM_2 == 1
                 vc_vi_port0: port@0 {
                     reg = <0>;
@@ -106,6 +118,29 @@
             num-channels = <VC_MIPI_CAMERAS>;
             #address-cells = <1>;
             #size-cells = <0>;
+#if VC_MIPI_CAM_1 == 1
+            vc_csi_chan2: channel@2 {
+                reg = <2>;
+                ports {
+                    #address-cells = <1>;
+                    #size-cells = <0>;
+                    vc_csi_chan2_port0: port@0 {
+                        reg = <0>;
+                        vc_csi_in2: endpoint@0 {
+                            port-index = <0>;
+                            bus-width = <BUS_WIDTH>;
+                            remote-endpoint = <&vc_mipi_out2>;
+                        };
+                    };
+                    vc_csi_chan2_port1: port@1 {
+                        reg = <1>;
+                        vc_csi_out2: endpoint@1 {
+                            remote-endpoint = <&vc_vi_in2>;
+                        };
+                    };
+                };
+            };
+#endif
 #if VC_MIPI_CAM_2 == 1
             vc_csi_chan0: channel@0 {
                 reg = <0>;
@@ -155,6 +190,98 @@
         };
     };
 
+#if VC_MIPI_CAM_1 == 1
+#endif
+    i2c@3160000 {
+#if VC_MIPI_MANUFACTURER == 1
+        vc_mipi_cam2: vc_mipi@1a {
+            reg                     = <0x1a>;
+#else
+        vc_mipi_cam2: vc_mipi@60 {
+            reg                     = <0x60>;
+#endif
+            compatible              = "nvidia,vc_mipi";
+            devnode                 = "video2";
+            use_sensor_mode_id      = "false";
+            sensor_model            = "vc_mipi";
+
+            num_lanes               = NUM_LANES;
+            // '0: disabled', '1: external', '2: pulsewidth', '3: self', '4: single', '5: sync', '6: stream_edge', '7: stream_level
+            trigger_mode            = "0";
+            //  '0: disabled', '1: flash active high', '2: flash active low', '3: trigger active low', '4: trigger active low and flash active high', '5: trigger and flash active low'
+            io_mode                 = "0";
+
+            // ----------------------------------------------------
+            // If you want to use GStreamer with nvarguscamerasrc
+            // you have to adjust this settings
+            physical_w              = "13.305";
+            physical_h              = "8.865";
+            // ----------------------------------------------------
+
+            // This node is needed by the Tegra framework.
+            // You don't have to change any settings if just want to use the V4L API.
+            mode0 {
+                num_lanes                = NUM_LANES;
+                tegra_sinterface         = "serial_a";
+                embedded_metadata_height = VC_MIPI_METADATA_H;
+                readout_orientation      = "0";
+
+                // ----------------------------------------------------
+                // If you want to use GStreamer with nvarguscamerasrc
+                // you have to adjust this settings. 
+                active_l                 = "0";
+                active_t                 = "0";
+                active_w                 = "5440";
+                active_h                 = "3648";
+                pixel_t                  = "bayer_rggb12";
+
+                min_gain_val             = "0";         // mdB
+                max_gain_val             = "27000";     // mdB
+                step_gain_val            = "26";        // mdB
+                default_gain             = "0";         // mdB
+
+                min_exp_time             = "1";         // us
+                max_exp_time             = "1000000";   // us
+                step_exp_time            = "1";         // us
+                default_exp_time         = "10000";     // us
+
+                min_framerate            = "0";         // mHz
+                max_framerate            = "11200";     // mHz
+                step_framerate           = "100";       // mHz
+                default_framerate        = "11200";     // mHz
+                // ----------------------------------------------------
+
+                gain_factor              = "1000";
+                exposure_factor          = "1000000";
+                framerate_factor         = "1000";
+                inherent_gain            = "1";
+                min_hdr_ratio            = "1";
+                max_hdr_ratio            = "1";
+
+                line_length              = "0";
+                phy_mode                 = "DPHY";
+                discontinuous_clk        = "no";
+                mclk_khz                 = "24000";
+                pix_clk_hz               = "800000000";
+                mclk_multiplier          = "9.33";
+                cil_settletime           = "0";
+                dpcm_enable              = "false";           
+            };
+
+            ports {
+                #address-cells = <1>;
+                #size-cells = <0>;
+                port@0 {
+                    reg = <0>;
+                    vc_mipi_out2: endpoint {
+                        port-index = <0>;
+                        bus-width = <BUS_WIDTH>;
+                        remote-endpoint = <&vc_csi_in2>;
+                    };
+                };
+            };
+        };
+    };
 #if VC_MIPI_CAM_2 == 1
     i2c@3180000 {
 #if VC_MIPI_MANUFACTURER == 1
@@ -361,6 +488,30 @@
         isp_bw_margin_pct = <25>;
 
         modules {
+#if VC_MIPI_CAM_1 == 1
+            cam_module2: module2 {
+                status = "okay";
+                badge = "quill_right_vc_mipi";
+                position = "right";
+                orientation = "0";
+                cam_module2_drivernode0: drivernode0 {
+                    status = "okay";
+                    pcl_id = "v4l2_sensor";
+#if VC_MIPI_MANUFACTURER == 1
+                    devname = "vc_mipi 1-001a";
+                    proc-device-tree = "/proc/device-tree/i2c@c240000/vc_mipi@1a";
+#else
+                    devname = "vc_mipi 1-0060";
+                    proc-device-tree = "/proc/device-tree/i2c@c240000/vc_mipi@60";
+#endif
+                };
+                cam_module2_drivernode1: drivernode1 {
+                    status = "okay";
+                    pcl_id = "v4l2_lens";
+                    proc-device-tree = "/proc/device-tree/lens@vc_mipi/";
+                };
+            };
+#endif
 #if VC_MIPI_CAM_2 == 1
             cam_module0: module0 {
                 status = "okay";
